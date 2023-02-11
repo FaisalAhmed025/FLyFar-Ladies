@@ -1,5 +1,6 @@
 export class CreateUserDto {
     Id:number
+    CustomerId:string
     NameTitle:string
     FirstName:string
     LastName:string

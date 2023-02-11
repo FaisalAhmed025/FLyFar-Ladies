@@ -1,10 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn()
     Id: number;
+    @Column()
+    CustomerId:string
     @Column()
     NameTitle:string
     @Column()
@@ -25,9 +27,10 @@ export class Users {
     Password:string
     @Column()
     Designation:string
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" })
+    createdAt:Date;
     @Column()
-    createdAt:string
-    @Column()
-    UpdatedAt:string
+    @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
+    UpdatedAt:Date
 
 }
