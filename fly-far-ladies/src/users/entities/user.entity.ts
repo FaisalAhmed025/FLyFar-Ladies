@@ -1,4 +1,6 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
+import * as bcrypt from 'bcrypt';
+import { BeforeInsert, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 
 @Entity()
@@ -32,5 +34,13 @@ export class Users {
     @Column()
     @UpdateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)", onUpdate: "CURRENT_TIMESTAMP(6)" })
     UpdatedAt:Date
+
+    @BeforeInsert()
+    async hashPassword(){
+         this.Password = await bcrypt.hash(this.Password, 10)
+    }
+    async ValidatePassword(Password:string):Promise<boolean>{
+        return bcrypt.compare(Password, this.Password)
+    }
 
 }
