@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from './entities/user.entity';
+import * as bcrypt from 'bcrypt';
 
 @Controller('users')
 export class UsersController {
@@ -20,6 +21,7 @@ export class UsersController {
     if(EmailAlreadyExist){
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);     
       }
+    const hashedPassword = await bcrypt.hash(createUserDto.Password,10);  
     const user=  await this.usersService.Register(createUserDto);
     return res.status(HttpStatus.CREATED).json({ message:"User register successfully", user})
       
