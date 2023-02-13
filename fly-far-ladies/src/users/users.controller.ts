@@ -11,7 +11,6 @@ import * as bcrypt from 'bcrypt';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService, @InjectRepository(Users) private userRepo:Repository<Users>) {}
-
   @Post('Register')
   async RegisterUser(@Body() createUserDto: CreateUserDto, @Req() req:Request, @Res() res:Response):Promise<any> {
     const {Email} = createUserDto
@@ -20,8 +19,7 @@ export class UsersController {
     })
     if(EmailAlreadyExist){
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);     
-      }
-    const hashedPassword = await bcrypt.hash(createUserDto.Password,10);  
+      }  
     const user=  await this.usersService.Register(createUserDto);
     return res.status(HttpStatus.CREATED).json({ message:"User register successfully", user})
       

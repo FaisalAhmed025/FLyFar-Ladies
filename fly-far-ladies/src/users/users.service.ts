@@ -9,16 +9,15 @@ import { Users } from './entities/user.entity';
 @Injectable()
 export class UsersService {
 
-  constructor(
+  constructor(@Inject(forwardRef(()=>AuthService))
   @InjectRepository(Users)
-  private createuserRep: Repository<Users>,
-  // @Inject(forwardRef(() => AuthService)) //<--- 
-  // private readonly authService: AuthService,
-  ){}
+  private createuserRep:Repository<Users>){}
 
-  async Register(createUserDto: CreateUserDto):Promise<Users> {
-    const user =  await this.createuserRep.create(createUserDto)
-    return this.createuserRep.save(user)
+
+  async Register(createUserDto: CreateUserDto){
+    const user = await this.createuserRep.create(createUserDto)
+    return await this.createuserRep.save(user)
+    
   }
 
   findAll() {
@@ -29,6 +28,12 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
+  async findOneByEmail(Email: string): Promise<Users|undefined> {
+    return await Users.findOne({
+      where:{Email}
+    })
+  }
+
   update(id: number, updateUserDto: UpdateUserDto) {
     return `This action updates a #${id} user`;
   }
@@ -37,7 +42,11 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  async getUser(Email: object ): Promise<any> {
-    return await this.createuserRep.findOne(Email);
+  async getUser(Email:string, Password:string): Promise<Users> {
+    return await this.createuserRep.findOne({
+      where:{
+        Email
+      }
+    });
 }
 }

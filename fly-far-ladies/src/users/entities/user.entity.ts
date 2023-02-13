@@ -23,7 +23,7 @@ export class Users extends BaseEntity {
     Address:string
     @Column()
     PhoneNumber:string
-    @Column()
+    @Column({unique:true})
     Email:string
     @Column()
     Password:string
@@ -39,8 +39,8 @@ export class Users extends BaseEntity {
     async hashPassword(){
          this.Password = await bcrypt.hash(this.Password, 10)
     }
-    async ValidatePassword(Password:string):Promise<boolean>{
-        return bcrypt.compare(Password, this.Password)
+    async ValidatePassword(Password:string):Promise<Users>{
+        return await bcrypt.compare(Password, this.Password)
     }
 
 }
