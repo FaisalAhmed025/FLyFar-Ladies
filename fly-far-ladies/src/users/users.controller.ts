@@ -6,7 +6,6 @@ import { Request, Response } from 'express';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Users } from './entities/user.entity';
-import * as bcrypt from 'bcrypt';
 
 @Controller('users')
 export class UsersController {

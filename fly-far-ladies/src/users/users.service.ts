@@ -9,7 +9,7 @@ import { Users } from './entities/user.entity';
 @Injectable()
 export class UsersService {
 
-  constructor(@Inject(forwardRef(()=>AuthService))
+  constructor(
   @InjectRepository(Users)
   private createuserRep:Repository<Users>){}
 
@@ -28,8 +28,8 @@ export class UsersService {
     return `This action returns a #${id} user`;
   }
 
-  async findOneByEmail(Email: string): Promise<Users|undefined> {
-    return await Users.findOne({
+   getuserbyEmail(Email:string):Promise<Users> {
+    return this.createuserRep.findOne({
       where:{Email}
     })
   }
@@ -42,11 +42,11 @@ export class UsersService {
     return `This action removes a #${id} user`;
   }
 
-  async getUser(Email:string, Password:string): Promise<Users> {
-    return await this.createuserRep.findOne({
-      where:{
-        Email
-      }
-    });
-}
+//   async getUser(Email:string, Password:string): Promise<Users> {
+//     return await this.createuserRep.findOne({
+//       where:{
+//         Email
+//       }
+//     });
+// }
 }
